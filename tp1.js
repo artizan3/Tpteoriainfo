@@ -48,30 +48,28 @@ function isnula(matbin){
 
 }
 function entropianula(matbin){
-    var sum=0;
-    for (let i=0;i<2;i++){
-        for (let j=0;j<2;j++){
-            if (matbin[i][j]!=0)
-                sum+=matbin[i][j]*Math.log2(1/matbin[i][j]);
-        }
-    }
+    var sum=matbin[0][0]*Math.log2(1/matbin[0][0])+matbin[1][0]*Math.log2(1/matbin[1][0]);
     if (process.argv[3]!=undefined)
         sum*=process.argv[3];
     return sum;
 }
 function entropiaNOnula(matbin){
-    const math = require('mathjs');
-    var a=[[matbin[0][0],matbin[0][1]],[1,1]];
-    var b=[0,1];
-    var sn=math.usolve(a,b);
-    let aux=0,sum=0;
+    let x=[0,0];
+    //uso auxiliares asi no perdemos la matriz original
+    let aux1=matbin[0][0]-1;
+    let aux2=matbin[0][1];
+    //todo esto sale de despejar en la matriz de forma manual, recordar que:
+    //las diagonales se le resta 1 y
+    //que solo usamos una fila de la matriz, la otra es el x+y=1
+    x[0]=-aux2/(aux1-aux2);
+    x[1]=1-x[0];
+    console.log("vector estacionario:",x);
+    var sum=0;
     for (let i=0;i<2;i++){
         for (let j=0;j<2;j++){
             if (matbin[j][i]!=0)
-                aux+=matbin[j][i]*math.log2(1/matbin[j][i]);
+                sum=matbin[j][i]*Math.log2(1/matbin[j][i])*x[i];
         }
-        aux*=sn[i];
-        sum+=aux;
     }
     return sum;
 }
