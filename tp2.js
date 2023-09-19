@@ -28,7 +28,6 @@ function lectura_arch(setpar,vec,sum){
             }else
                 setpar.set(palabras[i],1); 
         }    
-    
         setpar.forEach((valor, clave) => {
             for (let i = 0; i < clave.length; i++) {
                 letra = clave[i];
@@ -89,9 +88,8 @@ function iscompacto(suma,vec,setpar){
     let r=vec.length;
     for (const [clave, valor] of setpar) { 
         let val=Math.round(logaritmoBaseN(suma/valor,r));
-        if (clave.length!=val){
+        if (clave.length>val)
             return false;
-        }
     }; 
     return true;
 }

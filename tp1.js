@@ -65,11 +65,7 @@ function entropiaNOnula(matbin){
     x[1]=1-x[0];
     console.log("vector estacionario:",x);
     var sum=0;
-    for (let i=0;i<2;i++){
-        for (let j=0;j<2;j++){
-            if (matbin[j][i]!=0)
-                sum=matbin[j][i]*Math.log2(1/matbin[j][i])*x[i];
-        }
-    }
+    sum+=matbin[1][0]*Math.log2(1/matbin[1][0])*x[0]+matbin[0][0]*Math.log2(1/matbin[0][0])*x[0];
+    sum+=matbin[1][1]*Math.log2(1/matbin[1][1])*x[1]+matbin[0][1]*Math.log2(1/matbin[0][1])*x[1];
     return sum;
 }
