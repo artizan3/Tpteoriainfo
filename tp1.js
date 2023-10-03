@@ -50,14 +50,18 @@ function isnula(matbin){
 function entropianula(matbin){
     var sum=matbin[0][0]*Math.log2(1/matbin[0][0])+matbin[1][0]*Math.log2(1/matbin[1][0]);
     if (process.argv[3]!=undefined){
-        muestracombinacion(matbin);
-        sum*=process.argv[3];
+        sum=muestracombinacion(matbin);
     }
     return sum;
 }
 function muestracombinacion(matbin){
-    for (let i=0;i<2**process.argv[3];i++)
-        combinacion(matbin,i);
+    let ent=0;
+    for (let i=0;i<2**process.argv[3];i++){
+        let p=combinacion(matbin,i);
+        ent+=p*Math.log2(1/p);
+    }
+    console.log("orden",process.argv[3]);
+    return ent;
 }
 function combinacion(matbin,num){
     const vec=[process.argv[3]];
@@ -68,7 +72,7 @@ function combinacion(matbin,num){
         num/=2;
     }
     console.log(vec.join(''),"probabilidad:",sum);
-    
+    return sum;
 }
 function entropiaNOnula(matbin){
     let x=[0,0];
