@@ -1,14 +1,14 @@
-var matbin=new Array;
-var vecbin=[0,0];
-matbin=[[0,0],[0,0]]; 
-lecturaArch(matbin,vecbin);
-console.log("matriz: ",matbin);
-matProb(matbin);
-console.log("matriz de probabilidades:",matbin);
-if (isnula(matbin))
-    console.log("entropia nula:",entropianula(matbin));
-else
-    console.log("entropia no nula:",entropiaNOnula(matbin));
+    var matbin=new Array;
+    var vecbin=[0,0];
+    matbin=[[0,0],[0,0]]; 
+    lecturaArch(matbin,vecbin);
+    console.log("matriz: ",matbin);
+    matProb(matbin);
+    console.log("matriz de probabilidades:",matbin);
+    if (isnula(matbin))
+        console.log("entropia nula:",entropianula(matbin));
+    else
+        console.log("entropia no nula:",entropiaNOnula(matbin));
 function lecturaArch(matbin,vecbin) {
     const fs = require('fs');
     if (process.argv[2]!=undefined && fs.existsSync(process.argv[2])){
@@ -44,8 +44,7 @@ function isnula(matbin){
     if (Math.abs(matbin[0][0]-matbin[0][1])<=0.015 && (Math.abs(matbin[1][0]-matbin[1][1])<=0.015))
         return true;
     else
-        return false;
-
+       return false;
 }
 function entropianula(matbin){
     var sum=matbin[0][0]*Math.log2(1/matbin[0][0])+matbin[1][0]*Math.log2(1/matbin[1][0]);
