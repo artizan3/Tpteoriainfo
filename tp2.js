@@ -6,12 +6,9 @@ function main(){
     if (lectura_arch(setpar,vec)){//lo que hago es guardar el diccionario y la cantidad de apariciones
         var suma=sumar(setpar);
         muestra(setpar,vec,suma);
-        console.log('entropia:',enthropy(suma,vec,setpar));
-        console.log('longitud media:',longitudMedia(suma,setpar));
-        console.log('valor de kraft:',ecuacionKraft(vec,setpar));
-        console.log("es compacto: ",iscompacto(suma,vec,setpar));
+        console.log('entropia: %f\nlongitud media: %f\nvalor de kraft: %f\nes compacto:',enthropy(suma,vec,setpar),longitudMedia(suma,setpar),ecuacionKraft(vec,setpar),iscompacto(suma,vec,setpar));
         if (ecuacionKraft(vec,setpar)<=1)
-            console.log("es instantaneo: ",isinstantaneo(setpar));
+            console.log("es instantaneo:",isinstantaneo(setpar));
     }else
         console.log("error al abrir el archivo");
 }
@@ -20,7 +17,6 @@ function lectura_arch(setpar,vec,sum){
     if (process.argv[2]!=undefined && fs.existsSync(process.argv[2])){
         var contenido=fs.readFileSync(process.argv[2],'ASCII');
         var palabras=contenido.split(' ');
-    
         for (let i=0;i<palabras.length;i++){
             if (setpar.has(palabras[i])){
                 const aux=setpar.get(palabras[i])+1;
@@ -40,7 +36,6 @@ function lectura_arch(setpar,vec,sum){
         return false;
 }
 function muestra(setpar,vec,sum){
-    
     setpar.forEach((valor, clave) => {
         let aux=valor/sum;
         console.log('codigo:',clave,'probabilidad:',aux);
@@ -78,7 +73,7 @@ function longitudMedia(suma,setpar){
 }
 function ecuacionKraft(vec,setpar){
     let sum=0;
-    let cant=vec.length;
+    const cant=vec.length;
     setpar.forEach((valor, clave) => {
         sum+=cant**(-clave.length);
     }); 
@@ -94,7 +89,7 @@ function iscompacto(suma,vec,setpar){
     return true;
 }
 function isinstantaneo(setpar){
-    let aux=new Array;
+    const aux=new Array;
     let i=0;
     setpar.forEach((valor, clave) => {
         aux[i]=clave;
