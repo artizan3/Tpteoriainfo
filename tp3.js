@@ -8,27 +8,18 @@ class Nodo {
         this.derecha = null;
     }
 }
-
+let datosTXT=[];
 let setpar=new Map;
 let suma=0;
-lectura_arch(setpar,suma);
-setpar=filtrar_codigo(setpar);
-const arbol=construirArbolHuffman(setpar);
-const tabla=generarTablaCodigosHuffman(arbol);
-const vecfinal=[];
-console.log(tabla);
-Object.entries(tabla).forEach(function([key, value]) {
-    vecfinal.push(key.charCodeAt(0));
-    vecfinal.push(intTobin(value));
-});
-crearBin("compresionPrueba.bin",vecfinal);
+main();
+
 function lectura_arch(setpar,suma){
     const fs = require('fs');
     if (process.argv[2]!=undefined && fs.existsSync(process.argv[2])){
         var contenido=fs.readFileSync(process.argv[2],'ASCII');
-        var vector=contenido.split('');
-        for (let i=0;i<vector.length;i++){
-            var palabra=vector[i];
+        datosTXT=contenido.split('');
+        for (let i=0;i<datosTXT.length;i++){
+            var palabra=datosTXT[i];
             for (let j=0;j<palabra.length;j++){
                 if (setpar.has(palabra[j])){
                     let valor=setpar.get(palabra[j]);
@@ -81,7 +72,6 @@ function generarTablaCodigosHuffman(arbol, codigo = '', tabla = {}) {
         generarTablaCodigosHuffman(arbol.izquierda, codigo + '1', tabla);
         generarTablaCodigosHuffman(arbol.derecha, codigo + '0', tabla);
     }
-
     return tabla;
 }
 
@@ -95,6 +85,7 @@ function crearBin(nombreArchivo,vecfinal){
     });
 
 }
+
 function intTobin(dato){
     const array=Array.from(String(dato),Number);
     let valor=0;
@@ -102,4 +93,42 @@ function intTobin(dato){
         valor+=array[i]*2**(array.length-1-i);
     }
     return valor;
+}
+
+function leer_bin(nombreArchivo){
+    
+    
+}
+
+function guardaTexto(vecfinal){
+    vecfinal.unshift(vecfinal.length);
+    const mapa=new Map;
+    for (let i=1;i<vecfinal.length;i+=2)
+        mapa.set(vecfinal[i],vecfinal[i+1]);
+    for (let i=0;i<datosTXT.length;i++){
+        vecfinal.push(mapa.get(datosTXT[i].charCodeAt(0)))
+    }
+}
+function descomprimir(rutaArchivo){
+    //pasos, en la pos 0, tenemos la cantidad que son para nuestro decode
+    //se agrupan: clave cod
+    //una vez terminamos de armar el diccionario sigue el texto en formato codigo
+    //sn1 propongo bajar en contenido a un array (2byte pasarlos a 1 valor entero)
+    //leer el primero armar un map clave valor e ir descomprimiendo 1 a 1 con el map
+   
+}
+function main(){
+    lectura_arch(setpar,suma);
+    setpar=filtrar_codigo(setpar);
+    const arbol=construirArbolHuffman(setpar);
+    const tabla=generarTablaCodigosHuffman(arbol);
+    const vecfinal=[];
+    console.log(tabla);
+    Object.entries(tabla).forEach(function([key, value]) {
+        vecfinal.push(key.charCodeAt(0));
+        vecfinal.push(intTobin(value));
+    });
+    guardaTexto(vecfinal);
+    crearBin("compresionPrueba.bin",vecfinal);
+    descomprimir("compresionPrueba.bin");
 }
