@@ -1,4 +1,5 @@
 const { Console } = require('console');
+const fs = require('fs');
 class Nodo {
     constructor(caracter, frecuencia) {
         this.caracter = caracter;
@@ -6,21 +7,21 @@ class Nodo {
         this.izquierda = null;
         this.derecha = null;
     }
-    toString(){
-        return ("nodo caracter izquierdo"+nodo.izquierda.caracter+"nodo caracter derecho"+nodo.derecha.caracter+"dato"+nodo.caracter);
-    }
 }
 
 let setpar=new Map;
 let suma=0;
 lectura_arch(setpar,suma);
 setpar=filtrar_codigo(setpar);
-let arbol=construirArbolHuffman(setpar);
-const tabla_final=generarTablaCodigosHuffman(arbol);
-console.log(tabla_final);
-console.log(setpar);
-
-
+const arbol=construirArbolHuffman(setpar);
+const tabla=generarTablaCodigosHuffman(arbol);
+const vecfinal=[];
+console.log(tabla);
+Object.entries(tabla).forEach(function([key, value]) {
+    vecfinal.push(key.charCodeAt(0));
+    vecfinal.push(intTobin(value));
+});
+crearBin("compresionPrueba.bin",vecfinal);
 function lectura_arch(setpar,suma){
     const fs = require('fs');
     if (process.argv[2]!=undefined && fs.existsSync(process.argv[2])){
@@ -82,4 +83,23 @@ function generarTablaCodigosHuffman(arbol, codigo = '', tabla = {}) {
     }
 
     return tabla;
+}
+
+function crearBin(nombreArchivo,vecfinal){
+    const datosBinarios = Uint16Array.from(vecfinal);
+    const rutaArchivo = nombreArchivo;
+
+    fs.writeFile(rutaArchivo, datosBinarios, 'binary', (err) => {
+        if (err) throw err;
+        console.log('Datos binarios escritos en el archivo correctamente.');
+    });
+
+}
+function intTobin(dato){
+    const array=Array.from(String(dato),Number);
+    let valor=0;
+    for (let i=0;i<array.length;i++){
+        valor+=array[i]*2**(array.length-1-i);
+    }
+    return valor;
 }
