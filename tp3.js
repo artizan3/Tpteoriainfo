@@ -16,7 +16,9 @@ let suma=0;
 lectura_arch(setpar,suma);
 setpar=filtrar_codigo(setpar);
 let arbol=construirArbolHuffman(setpar);
-generarTablaCodigosHuffman(arbol);
+const tabla_final=generarTablaCodigosHuffman(arbol);
+console.log(tabla_final);
+console.log(setpar);
 
 
 function lectura_arch(setpar,suma){
@@ -79,5 +81,5 @@ function generarTablaCodigosHuffman(arbol, codigo = '', tabla = {}) {
         generarTablaCodigosHuffman(arbol.derecha, codigo + '0', tabla);
     }
 
-    console.log(tabla);
+    return tabla;
 }
