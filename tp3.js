@@ -83,7 +83,6 @@ function crearBin(nombreArchivo,vecfinal){
         if (err) throw err;
         console.log('Datos binarios escritos en el archivo correctamente.');
     });
-
 }
 
 function intTobin(dato){
@@ -95,11 +94,6 @@ function intTobin(dato){
     return valor;
 }
 
-function leer_bin(nombreArchivo){
-    
-    
-}
-
 function guardaTexto(vecfinal){
     vecfinal.unshift(vecfinal.length);
     const mapa=new Map;
@@ -109,26 +103,49 @@ function guardaTexto(vecfinal){
         vecfinal.push(mapa.get(datosTXT[i].charCodeAt(0)))
     }
 }
+
 function descomprimir(rutaArchivo){
     //pasos, en la pos 0, tenemos la cantidad que son para nuestro decode
     //se agrupan: clave cod
     //una vez terminamos de armar el diccionario sigue el texto en formato codigo
     //sn1 propongo bajar en contenido a un array (2byte pasarlos a 1 valor entero)
     //leer el primero armar un map clave valor e ir descomprimiendo 1 a 1 con el map
-   
+    var buffer=fs.readFileSync(rutaArchivo);
+    const vec=[];
+    for (let i = 0; i < buffer.length; i += 2) {
+        const entero = buffer.readUInt16LE(i);
+        vec.push(entero);
+    }
+    /*const map=new Map();
+    let i=1;
+    for(i;i<=vec[0];i+=2){
+        map.set(vec[i+1],vec[i]);
+    }
+    console.log(map);*/ //ACA HAY UN PROBLEMA!
+    /*const vec2=[];
+    while (i<vec.length){
+        vec2.push(map.get(vec[i]));
+        i++;
+    }
+    const contenido = vec2.join('');
+    fs.writeFileSync('archivo.txt', contenido);*/
 }
 function main(){
-    lectura_arch(setpar,suma);
-    setpar=filtrar_codigo(setpar);
-    const arbol=construirArbolHuffman(setpar);
-    const tabla=generarTablaCodigosHuffman(arbol);
-    const vecfinal=[];
-    console.log(tabla);
-    Object.entries(tabla).forEach(function([key, value]) {
-        vecfinal.push(key.charCodeAt(0));
-        vecfinal.push(intTobin(value));
-    });
-    guardaTexto(vecfinal);
-    crearBin("compresionPrueba.bin",vecfinal);
-    descomprimir("compresionPrueba.bin");
+    if (process.argv[3]=='-c'){
+        lectura_arch(setpar,suma);
+        setpar=filtrar_codigo(setpar);
+        const arbol=construirArbolHuffman(setpar);
+        const tabla=generarTablaCodigosHuffman(arbol);
+        const vecfinal=[];
+        console.log(tabla);
+        Object.entries(tabla).forEach(function([key, value]) {
+            vecfinal.push(key.charCodeAt(0));
+            vecfinal.push(intTobin(value));
+        });
+        guardaTexto(vecfinal);
+        crearBin("compresion.bin",vecfinal)
+    }
+    else
+        if (process.argv[3]=='-d')
+            descomprimir("compresion.bin");
 }
