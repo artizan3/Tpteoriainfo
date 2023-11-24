@@ -204,7 +204,6 @@ function main(){
         lectura_arch();//de aca sale datosTXT(todo el txt) y setpar(clave y prob)
         setpar=filtrar_codigo();//ordenamos setpar
         arbol=construirArbolHuffman();//en base a setpar creamos el arbol
-        const raiz=construirArbolHuffman();//copia del arbol para la compresion
         tabla=generarTablaCodigosHuffman(arbol);//tabla tiene clave y codigo asociado
         const mapafinal=new Map;//basicamente paso la tabla a la estructura de mapa
         Object.entries(tabla).forEach(function([key, value]) {
